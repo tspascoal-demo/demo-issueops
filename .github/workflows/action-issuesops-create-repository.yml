@@ -18,7 +18,7 @@ permissions:
 jobs:
   Create-Repo:
     runs-on: ubuntu-latest
-    if: contains(github.event.issues.labels.*.name, 'issueops')
+    #if: contains(github.event.issues.labels.*.name, 'issueops')
     steps:
       - name: Dump GitHub Context
         env:
