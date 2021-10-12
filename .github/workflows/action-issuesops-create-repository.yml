@@ -2,10 +2,23 @@ name: Create repository
 on:
   issues:
     types: [opened]
-        
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: read
+  issues: write
+  packages: none
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
 jobs:
   Create-Repo:
     runs-on: ubuntu-latest
+    if: contains(github.event.issues.labels.*.name, 'issueops')
     steps:
       - name: Dump GitHub Context
         env:
