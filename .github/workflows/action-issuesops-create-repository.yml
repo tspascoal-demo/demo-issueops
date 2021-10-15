@@ -98,17 +98,16 @@ jobs:
                 throw err 
             }
             
-            
-      - name: Add comment
-        uses: actions/github-script@v5
-        with:
-          script: |
-            github.rest.issues.createComment({
+            try { 
+              await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Thanks for creating a repo'
-            })
+              body: 'Thanks for creating a repo. Your new repo is available at: https://github.com/' + context.payload.organization.login + "/" + newRepo
+             }) 
+            } catch(err) {
+                throw err
+            }
             
             
             
