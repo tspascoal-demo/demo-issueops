@@ -23,8 +23,7 @@ body:
       label: Template Repository
       description: Select Template Repository that you want to use
       options:
-        - sample-bestpractice-tr
-        - sample-githubcustomers-tr
+        - sample
     validations:
       required: false
   - type: input
