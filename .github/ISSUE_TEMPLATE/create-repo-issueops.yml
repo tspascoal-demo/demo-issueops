@@ -26,7 +26,7 @@ body:
         - sample-bestpractice-tr
         - sample-githubcustomers-tr
     validations:
-      required: true
+      required: false
   - type: input
     id: team
     attributes:
