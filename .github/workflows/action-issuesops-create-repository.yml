@@ -68,7 +68,7 @@ jobs:
 
             if(!templateRepo || templateRepo.length === 0 || templateRepo === "_No response_") {
               try {
-                await github.rest.repos.create({
+                await github.rest.repos.createInOrg({
                   name: newRepo,
                   owner: context.payload.organization.login,
                   description: "Test",
