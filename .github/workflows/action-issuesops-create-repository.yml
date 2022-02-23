@@ -35,7 +35,7 @@ jobs:
             console.log("Allow Squash Merge: " +  bodySplit[22].includes("X"))
             console.log("Allow Forking: " +  bodySplit[26].includes("X"))
 
-            let newRepo = bodySplit[2]
+            let newRepo = bodySplit[2].trim()
             let templateRepo = bodySplit[6]
             let teams = bodySplit[10].split(",")
             let enableIssue = bodySplit[14].includes("X")
@@ -45,13 +45,17 @@ jobs:
             
             console.log("New repo: " + newRepo + " Template Repo: " + templateRepo + " Teams: " + teams)
 
+            varrepo;
             try {
-              const repo = await github.rest.repos.get({
+              repo = await github.rest.repos.get({
                   name: newRepo,
                   owner: context.payload.organization.login
               });
             } catch(err) {
               console.log(err);
+            }
+
+            if(repo) {
               console.log(`::error title=Repo Already exists::${newRepo} already exists`);
               await github.rest.issues.createComment({
                 issue_number: context.issue.number,
