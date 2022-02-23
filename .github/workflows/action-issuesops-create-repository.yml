@@ -45,7 +45,7 @@ jobs:
             
             console.log("New repo: " + newRepo + " Template Repo: " + templateRepo + " Teams: " + teams)
 
-            var repo;
+            var repo = null;
             try {
               repo = await github.rest.repos.get({
                   name: newRepo,
