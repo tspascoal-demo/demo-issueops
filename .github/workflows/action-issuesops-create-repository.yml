@@ -61,9 +61,8 @@ jobs:
               return
             }
 
-            if(!templateRepo || templateRepo.length === 0) {
+            if(!templateRepo || templateRepo.length === 0 || templateRepo === "_No response_") {
               try {
-                // TODO: We should add team_id parameter
                 await github.rest.repos.create({
                   name: newRepo,
                   owner: context.payload.organization.login,
