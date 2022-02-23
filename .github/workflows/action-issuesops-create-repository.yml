@@ -68,9 +68,10 @@ jobs:
 
             if(!templateRepo || templateRepo.length === 0 || templateRepo === "_No response_") {
               try {
+                // https://octokit.github.io/rest.js/v18#repos-create-in-org
                 await github.rest.repos.createInOrg({
                   name: newRepo,
-                  owner: context.payload.organization.login,
+                  org: context.payload.organization.login,
                   description: "Test",
                   auto_init: true,
                   visibility: "private"
