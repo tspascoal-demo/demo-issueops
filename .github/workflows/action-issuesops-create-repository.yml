@@ -55,7 +55,7 @@ jobs:
               console.log(err);
             }
 
-            if(repo) {
+            if(repo != null) {
               console.log(`::error title=Repo Already exists::${newRepo} already exists`);
               await github.rest.issues.createComment({
                 issue_number: context.issue.number,
