@@ -46,10 +46,22 @@ jobs:
             console.log("New repo: " + newRepo + " Template Repo: " + templateRepo + " Teams: " + teams)
 
 
-            const repo = await github.rest.repos.get({
-                name: newRepo,
-                owner: context.payload.organization.login
-            });
+            try {
+              const repo = await github.rest.repos.get({
+                  name: newRepo,
+                  owner: context.payload.organization.login
+              });
+            } catch(err) {
+              console.log(`::error title=Repo Already exists::${newRepo} already exists`)
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `repo `${newRepo} already exists.`
+              })
+              return
+
+            }
             
             try {
               await github.rest.repos.createUsingTemplate({
@@ -62,13 +74,7 @@ jobs:
                 private: false
               })
             } catch(err) {
-              await github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `repo `${newRepo} already exists.`
-              })
-              return
+              throw err
             }
             
             
