@@ -56,32 +56,46 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `repo ${newRepo} already exists.`
+                body: `@${context.actor} repo ${newRepo} already exists.`
               })
               return
             }
-            
-            try {
-              await github.rest.repos.createUsingTemplate({
-                template_owner: context.payload.organization.login,
-                template_repo: templateRepo,
-                name: newRepo,
-                owner: context.payload.organization.login,
-                description: "Test",
-                include_all_branches: true,
-                private: false
-              })
-            } catch(err) {
-              throw err
-            }
-            
+
+            if(!templateRepo || templateRepo.length === 0) {
+              try {
+                // TODO: We should add team_id parameter
+                await github.rest.repos.create({
+                  name: newRepo,
+                  owner: context.payload.organization.login,
+                  description: "Test",
+                  auto_init: true,
+                  visibility: "private"
+                })
+              } catch(err) {
+                throw err
+              }
+            } else { // TEMPLATE
+              try {
+                await github.rest.repos.createUsingTemplate({
+                  template_owner: context.payload.organization.login,
+                  template_repo: templateRepo,
+                  name: newRepo,
+                  owner: context.payload.organization.login,
+                  description: "Test",
+                  include_all_branches: true,
+                  private: true
+                })
+              } catch(err) {
+                throw err
+              }
+            }            
             
             try { 
               await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Thanks for creating a repo. Your new repo is available at: https://github.com/' + context.payload.organization.login + "/" + newRepo
+              body: '@${context.actor} Thanks for creating a repo. Your new repo is available at: https://github.com/' + context.payload.organization.login + "/" + newRepo
              }) 
             } catch(err) {
                 await github.rest.issues.createComment({
