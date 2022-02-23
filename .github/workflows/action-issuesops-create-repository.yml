@@ -48,7 +48,7 @@ jobs:
             var repo = null;
             try {
               repo = await github.rest.repos.get({
-                  name: newRepo,
+                  repo: newRepo,
                   owner: context.payload.organization.login
               });
             } catch(err) {
